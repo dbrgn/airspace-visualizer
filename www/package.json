@@ -1,0 +1,17 @@
+{
+  "name": "airspace-visualizer",
+  "version": "0.1.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --config webpack.prod.js",
+    "start": "webpack-dev-server --config webpack.dev.js --host 0.0.0.0 --disable-host-check"
+  },
+  "author": "",
+  "devDependencies": {
+    "copy-webpack-plugin": "^4.5.2",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0",
+    "webpack-dev-server": "^3.2.1",
+    "webpack-merge": "^4.2.1"
+  }
+}
