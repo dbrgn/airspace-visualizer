@@ -4,12 +4,15 @@
     <meta charset="utf-8">
     <title>Airspace Visualizer</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
+
     <style>
         html {
             font-family: sans-serif;
         }
         body {
-            max-width: 900px;
             margin: 0 auto;
             padding: 0 8px;
         }
@@ -17,10 +20,36 @@
             margin-top: 16px;
             margin-bottom: 8px;
         }
+        #dropinfo {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            font-size: 4em;
+            margin: 0;
+            padding: 0;
+        }
+        #map {
+            height: 600px;
+            width: 100%;
+        }
+        .hidden {
+            display: none;
+        }
+        .droptarget {
+            border: 2px dashed #333;
+        }
+        .droptarget #map {
+            opacity: 0.4;
+            margin: -2px;
+        }
     </style>
   </head>
   <body>
     <h2>Airspace Visualizer</h2>
-    <script src="./bootstrap.demo.bundle.js"></script>
+    <div id="wrapper">
+        <div id="dropinfo" class="hidden"><p>Drop here to load</p></div>
+        <div id="map"></div>
+    </div>
+    <script src="./bootstrap.app.bundle.js"></script>
   </body>
 </html>

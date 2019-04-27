@@ -23,9 +23,9 @@ cfg_if! {
         pub fn init_log() {
             use log::Level;
             // Best effort, ignore error if initialization fails.
-            // (This could be the ase if the logger is initialized multiple
+            // (This could be the case if the logger is initialized multiple
             // times.)
-            let _ = console_log::init_with_level(Level::Trace);
+            let _ = console_log::init_with_level(Level::Debug);
         }
     } else {
         pub fn init_log() {}
