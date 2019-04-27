@@ -41,8 +41,7 @@ To set up the frontend:
 
 Start the dev server:
 
-    cd www
-    npm run start
+    make dev
 
 Now the frontend should be running at `localhost:8080`.
 
