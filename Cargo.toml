@@ -3,9 +3,10 @@ name = "airspace-visualizer"
 description = "Visualize Skytraxx airspaces. Made with Rust + Webassembly."
 version = "0.1.0"
 authors = ["Danilo Bargen <mail@dbrgn.ch>"]
-license = "MIT OR Apache-2.0"
+license = "AGPL-3.0"
 repository = "https://github.com/dbrgn/airspace-visualizer"
 edition = "2018"
+publish = false
 
 [lib]
 crate-type = ["cdylib", "rlib"]
