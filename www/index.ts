@@ -74,7 +74,7 @@ function zoomToAirspace(e: MouseEvent) {
 /**
  * Add the airspace to the map.
  */
-function showAirspace(airspace: Airspace) {
+function showAirspace(airspace: Airspace): L.Path {
     // Colors based on https://www.materialpalette.com/colors
     let color;
     switch (airspace.class) {
@@ -124,7 +124,7 @@ function showAirspace(airspace: Airspace) {
             polygon.addEventListener('mouseout', resetHighlight);
             polygon.addEventListener('click', zoomToAirspace);
             polygon.addTo(map);
-            break;
+            return polygon;
         case "Circle":
             const circle = L.circle(
                 airspace.geom.centerpoint,
@@ -137,7 +137,7 @@ function showAirspace(airspace: Airspace) {
             circle.addEventListener('mouseout', resetHighlight);
             circle.addEventListener('click', zoomToAirspace);
             circle.addTo(map);
-            break;
+            return circle;
         default:
             throw new Error(`Unhandled geometry type: ${airspace.geom.type}`);
     }
@@ -180,9 +180,14 @@ function loadFile(files: FileList) {
                 });
 
                 // Add airspaces to map
+                const paths = [];
                 for (const airspace of result) {
-                    showAirspace(airspace);
+                    paths.push(showAirspace(airspace));
                 }
+
+                // Fit map to bounds
+                const group = L.featureGroup(paths);
+                map.fitBounds(group.getBounds());
             } else {
                 alert('No airspaces could be found. Is it a valid OpenAir file?');
             }
@@ -197,7 +202,7 @@ function loadFile(files: FileList) {
 
 initDragAndDrop(mapdiv, dropzone, dropinfo, loadFile);
 
-const map = L.map('map').setView([46.76733810404278, 8.496828420038582], 8);
+const map = L.map('map').setView([46.76733810404278, 8.496828420038582], 6);
 
 // Add tiles
 L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/256/{z}/{x}/{y}?access_token={accessToken}', {
