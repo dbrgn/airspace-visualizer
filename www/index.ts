@@ -3,10 +3,48 @@ import {Airspace} from './openair';
 import {initDragAndDrop} from './drag_drop';
 import * as L from 'leaflet';
 
+// DOM elements
 const mapdiv = document.getElementById("map");
 const dropzone = document.getElementById("wrapper");
 const dropinfo = document.getElementById("dropinfo");
 
+// Styling
+const defaultWeight = 2;
+const highlightedWeight = 5;
+
+/**
+ * Highlight an airspace on the mouseover event.
+ */
+function highlightAirspace(e: MouseEvent) {
+    const polygon = e.target as any as L.Polyline;
+    polygon.setStyle({
+        weight: highlightedWeight,
+    });
+    polygon.bringToFront();
+}
+
+/**
+ * Reset highlights on the mouseout event.
+ */
+function resetHighlight(e: MouseEvent) {
+    const polygon = e.target as any as L.Polyline;
+    polygon.setStyle({
+        weight: defaultWeight,
+    });
+    console.log('target', e.target);
+}
+
+/**
+ * Zoom to the airspace on click.
+ */
+function zoomToAirspace(e: MouseEvent) {
+    const polygon = e.target as any as L.Polyline;
+    map.fitBounds(polygon.getBounds());
+}
+
+/**
+ * Add the airspace to the map.
+ */
 function showAirspace(airspace: Airspace) {
     // Colors based on https://www.materialpalette.com/colors
     let color;
@@ -48,10 +86,19 @@ function showAirspace(airspace: Airspace) {
     }
     switch (airspace.geom.type) {
         case "Polygon":
-            L.polygon(
+            const polygon = L.polygon(
                 airspace.geom.points.map((obj) => [obj.lat, obj.lng]),
-                {color: color, weight: 2, opacity: 0.6},
-            ).addTo(map);
+                {
+                    color: color,
+                    weight: defaultWeight,
+                    opacity: 0.6,
+                    interactive: true,
+                },
+            );
+            polygon.addEventListener('mouseover', highlightAirspace);
+            polygon.addEventListener('mouseout', resetHighlight);
+            polygon.addEventListener('click', zoomToAirspace);
+            polygon.addTo(map);
             break;
         case "Circle":
             // TODO
