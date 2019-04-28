@@ -6,56 +6,73 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Barlow+Semi+Condensed|Montserrat:300,300i&amp;subset=latin-ext">
     <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
 
     <style>
-        html {
-            font-family: sans-serif;
-        }
-        body {
-            margin: 0 auto;
-            padding: 0 8px;
-        }
-        h3 {
-            margin-top: 16px;
-            margin-bottom: 8px;
-        }
-        #dropinfo {
-            position: absolute;
-            width: 100%;
-            text-align: center;
-            font-size: 4em;
-            margin: 0;
-            padding: 0;
-        }
-        #map {
-            height: 600px;
-            width: 100%;
-        }
-        .hidden {
-            display: none;
-        }
-        .droptarget {
-            border: 2px dashed #333;
-        }
-        .droptarget #map {
-            opacity: 0.4;
-            margin: -2px;
-        }
+      html, body {
+        height: 100%;
+      }
+      body {
+          font-family: Montserrat, sans-serif;
+          margin: 0 auto;
+          padding: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: stretch;
+      }
+      h1, h2, h3, h4 {
+          font-family: 'Barlow Semi Condensed', sans-serif;
+      }
+      h1 {
+          margin-top: 16px;
+          margin-bottom: 8px;
+          font-size: 3em;
+      }
+      h1, h2, h3, h4, p {
+          padding: 0 8px;
+      }
+      #wrapper {
+        flex-grow: 1;
+      }
+      #dropinfo {
+          position: absolute;
+          width: 100%;
+          text-align: center;
+          font-size: 4em;
+          margin: 0;
+          padding: 0;
+      }
+      #map {
+          height: 100%;
+          width: 100%;
+      }
+      .hidden {
+          display: none;
+      }
+      .droptarget {
+          border: 2px dashed #333;
+      }
+      .droptarget #map {
+          opacity: 0.4;
+          margin: -2px;
+      }
     </style>
   </head>
   <body>
-    <h2>Airspace Visualizer</h2>
-    <p>Drag and drop an airspace file in OpenAir format onto the map. You can find an example file <a href="https://raw.githubusercontent.com/dbrgn/openair-rs/master/example_data/Switzerland.txt">here</a></p>
+    <header>
+      <h1>Airspace Visualizer ✈</h1>
+      <p>Drag and drop an airspace file in <a href="http://www.winpilot.com/UsersGuide/UserAirspace.asp">OpenAir format</a> onto the map. You can find an example file <a href="https://raw.githubusercontent.com/dbrgn/openair-rs/master/example_data/Switzerland.txt">here</a>.</p>
+    </header>
     <div id="wrapper">
-        <div id="dropinfo" class="hidden"><p>Drop here to load</p></div>
-        <div id="map"></div>
+      <div id="dropinfo" class="hidden"><p>Drop here to load</p></div>
+      <div id="map"></div>
     </div>
     <footer>
-        <p>
-            Made by <a href="https://bargen.dev/">Danilo Bargen</a>.
-            Source code is <a href="https://github.com/dbrgn/airspace-visualizer/">on GitHub</a>.
-        </p>
+      <p>
+        Made by <a href="https://bargen.dev/">Danilo Bargen</a>.
+        Source code is <a href="https://github.com/dbrgn/airspace-visualizer/">on GitHub</a>.
+      </p>
     </footer>
     <script src="./bootstrap.app.bundle.js"></script>
   </body>
