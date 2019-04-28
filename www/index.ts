@@ -1,12 +1,14 @@
 import {process_openair} from 'airspace-visualizer';
-import {Airspace} from './openair';
+import {Airspace, Altitude} from './openair';
 import {initDragAndDrop} from './drag_drop';
+import {feetToMeters, nauticalMilesToMeters} from './units';
 import * as L from 'leaflet';
 
 // DOM elements
 const mapdiv = document.getElementById("map");
 const dropzone = document.getElementById("wrapper");
 const dropinfo = document.getElementById("dropinfo");
+const airspaceinfo = document.getElementById("airspaceinfo");
 
 // Styling
 const defaultWeight = 2;
@@ -17,15 +19,38 @@ const defaultStyle = {
     interactive: true,
 };
 
+function altitudeToText(altitude: Altitude): string {
+    switch (altitude.type) {
+        case 'Gnd':
+            return 'GND';
+        case 'FeetAgl':
+            return `${feetToMeters(altitude.val)} m AGL`;
+        case 'FeetAmsl':
+            return `${feetToMeters(altitude.val)} m AMSL`;
+        default:
+            throw new Error(`Invalid altitude type: ${altitude.type}`);
+    }
+}
+
 /**
  * Highlight an airspace on the mouseover event.
  */
-function highlightAirspace(e: MouseEvent) {
-    const polygon = e.target as any as L.Polyline;
-    polygon.setStyle({
-        weight: highlightedWeight,
-    });
-    polygon.bringToFront();
+function highlightAirspace(airspace: Airspace) {
+    const name: HTMLElement = airspaceinfo.querySelector('.name');
+    const classification: HTMLElement = airspaceinfo.querySelector('.class');
+    const bounds: HTMLElement = airspaceinfo.querySelector('.bounds');
+    return (e: MouseEvent) => {
+        const polygon = e.target as any as L.Polyline;
+        polygon.setStyle({
+            weight: highlightedWeight,
+        });
+        polygon.bringToFront();
+
+        name.innerText = airspace.name;
+        classification.innerText = `Class ${airspace.class}`;
+        bounds.innerText = `From ${altitudeToText(airspace.lowerBound)} to ${altitudeToText(airspace.upperBound)}`;
+        airspaceinfo.classList.remove('hidden');
+    };
 }
 
 /**
@@ -36,6 +61,7 @@ function resetHighlight(e: MouseEvent) {
     polygon.setStyle({
         weight: defaultWeight,
     });
+    airspaceinfo.classList.add('hidden');
 }
 
 /**
@@ -44,13 +70,6 @@ function resetHighlight(e: MouseEvent) {
 function zoomToAirspace(e: MouseEvent) {
     const polygon = e.target as any as L.Polyline;
     map.fitBounds(polygon.getBounds());
-}
-
-/**
- * Convert nautical miles to meters.
- */
-function nauticalMilesToMeters(nm: number): number {
-    return nm * 1852;
 }
 
 /**
@@ -102,7 +121,7 @@ function showAirspace(airspace: Airspace) {
                     color: color,
                 }),
             );
-            polygon.addEventListener('mouseover', highlightAirspace);
+            polygon.addEventListener('mouseover', highlightAirspace(airspace));
             polygon.addEventListener('mouseout', resetHighlight);
             polygon.addEventListener('click', zoomToAirspace);
             polygon.addTo(map);
@@ -115,7 +134,7 @@ function showAirspace(airspace: Airspace) {
                     radius: nauticalMilesToMeters(airspace.geom.radius),
                 }),
             );
-            circle.addEventListener('mouseover', highlightAirspace);
+            circle.addEventListener('mouseover', highlightAirspace(airspace));
             circle.addEventListener('mouseout', resetHighlight);
             circle.addEventListener('click', zoomToAirspace);
             circle.addTo(map);
