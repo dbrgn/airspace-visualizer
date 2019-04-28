@@ -1,35 +1,11 @@
 import {process_openair} from 'airspace-visualizer';
 import {Airspace} from './openair';
+import {initDragAndDrop} from './drag_drop';
 import * as L from 'leaflet';
 
 const mapdiv = document.getElementById("map");
 const dropzone = document.getElementById("wrapper");
 const dropinfo = document.getElementById("dropinfo");
-
-function onDragEnter() {
-    dropzone.classList.add('droptarget');
-    dropinfo.classList.remove('hidden');
-}
-
-function onDragOver(e: DragEvent) {
-    e.stopPropagation();
-    e.preventDefault();
-    e.dataTransfer.dropEffect = 'move';
-}
-
-function onDragLeave() {
-    dropzone.classList.remove('droptarget');
-    dropinfo.classList.add('hidden');
-}
-
-function onDrop(e: DragEvent) {
-    e.preventDefault();
-    onDragLeave();
-
-    if (e.dataTransfer.files) {
-        loadFile(e.dataTransfer.files);
-    }
-}
 
 function showAirspace(airspace: Airspace) {
     // Colors based on https://www.materialpalette.com/colors
@@ -110,10 +86,7 @@ function loadFile(files: FileList) {
     }
 }
 
-mapdiv.addEventListener('dragenter', onDragEnter);
-mapdiv.addEventListener('dragover', onDragOver);
-mapdiv.addEventListener('dragleave', onDragLeave);
-mapdiv.addEventListener('drop', onDrop);
+initDragAndDrop(mapdiv, dropzone, dropinfo, loadFile);
 
 const map = L.map('map').setView([46.76733810404278, 8.496828420038582], 8);
 
