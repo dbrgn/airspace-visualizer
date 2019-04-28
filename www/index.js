@@ -31,11 +31,49 @@ function onDrop(e) {
 }
 
 function showAirspace(airspace) {
+    // Colors based on https://www.materialpalette.com/colors
+    let color;
+    switch (airspace.class) {
+        case 'A':
+            color = '#2196f3';  // Blue
+            break;
+        case 'B':
+            color = '#00bcd4';  // Cyan
+            break;
+        case 'C':
+            color = '#3f51b5';  // Indigo
+            break;
+        case 'D':
+            color = '#9c27b0';  // Purple
+            break;
+        case 'E':
+            color = '#e91e63';  // Pink
+            break;
+        case 'CTR':
+            color = '#f44336';  // Red
+            break;
+        case 'Restricted':
+            color = '#ffc107';  // Amber
+            break;
+        case 'Danger':
+            color = '#4caf50';  // Green
+            break;
+        case 'Prohibited':
+        case 'GliderProhibited':
+            color = '#ff5722';  // Deep Orange
+            break;
+        case 'WaveWindow':
+            color = '#607d8b';  // Blue Grey
+            break;
+        default:
+            console.log('Class is ', airspace.class);
+            color = 'grey';
+    }
     switch (airspace.geom.type) {
         case "Polygon":
             L.polygon(
                 airspace.geom.points.map((obj) => [obj.lat, obj.lng]),
-                {color: 'red'},
+                {color: color, weight: 2, opacity: 0.6},
             ).addTo(map);
             break;
         case "Circle":
