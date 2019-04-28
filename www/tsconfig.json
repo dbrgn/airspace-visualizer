@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "target": "es2015",
+        "module": "esnext",
+        "moduleResolution": "node",
+        "noImplicitAny": true,
+        "sourceMap": true,
+        "removeComments": true
+    },
+    "exclude": [
+        "node_modules",
+        "tests",
+        "build",
+        "dist"
+    ]
+}

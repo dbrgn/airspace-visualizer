@@ -1,5 +1,6 @@
-import {process_openair} from "airspace-visualizer";
-window.wasm = process_openair;
+import {process_openair} from 'airspace-visualizer';
+import {Airspace} from './openair';
+import * as L from 'leaflet';
 
 const mapdiv = document.getElementById("map");
 const dropzone = document.getElementById("wrapper");
@@ -10,7 +11,7 @@ function onDragEnter() {
     dropinfo.classList.remove('hidden');
 }
 
-function onDragOver(e) {
+function onDragOver(e: DragEvent) {
     e.stopPropagation();
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
@@ -21,7 +22,7 @@ function onDragLeave() {
     dropinfo.classList.add('hidden');
 }
 
-function onDrop(e) {
+function onDrop(e: DragEvent) {
     e.preventDefault();
     onDragLeave();
 
@@ -30,7 +31,7 @@ function onDrop(e) {
     }
 }
 
-function showAirspace(airspace) {
+function showAirspace(airspace: Airspace) {
     // Colors based on https://www.materialpalette.com/colors
     let color;
     switch (airspace.class) {
@@ -82,13 +83,13 @@ function showAirspace(airspace) {
     }
 }
 
-function loadFile(files) {
+function loadFile(files: FileList) {
     for (const file of files) {
         console.log('Loading file...', file);
         const reader = new FileReader();
-        reader.onload = function(ev) {
+        reader.onload = function(e: ProgressEvent) {
             // Get u8 view of arraybuffer
-            const bytes = new Uint8Array(ev.target.result);
+            const bytes = new Uint8Array(this.result as ArrayBuffer);
 
             // Process bytes
             const result = process_openair(bytes);
@@ -101,7 +102,7 @@ function loadFile(files) {
                 }
             }
         };
-        reader.onerror = function(ev) {
+        reader.onerror = function(e: ProgressEvent) {
             // TODO
             alert('Processing file failed');
         };
@@ -121,10 +122,4 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/256/{z}/{x}/{y}?access_
     id: 'danilo/citrnqoyx000h2jmg5qenf8ep',
     accessToken: 'pk.eyJ1IjoiZGFuaWxvIiwiYSI6IkM2cVZZdkkifQ.KK_4WqiWBL_DhpjIfGPcLw',
     attribution: '© <a href="https://www.mapbox.com/about/maps/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/map-feedback/" target="_blank">Improve this map</a></strong>',
-}).addTo(map);
-
-//const mapped = coords.map(c => [
-//    c[0] + c[1]/60 + c[2]/3600,
-//    c[3] + c[4]/60 + c[5]/3600,
-//]);
-//L.polygon(mapped, {color: 'red'}).addTo(map);
+} as any).addTo(map);
