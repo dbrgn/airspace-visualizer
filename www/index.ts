@@ -11,6 +11,11 @@ const dropinfo = document.getElementById("dropinfo");
 // Styling
 const defaultWeight = 2;
 const highlightedWeight = 5;
+const defaultStyle = {
+    weight: defaultWeight,
+    opacity: 0.6,
+    interactive: true,
+};
 
 /**
  * Highlight an airspace on the mouseover event.
@@ -31,7 +36,6 @@ function resetHighlight(e: MouseEvent) {
     polygon.setStyle({
         weight: defaultWeight,
     });
-    console.log('target', e.target);
 }
 
 /**
@@ -40,6 +44,13 @@ function resetHighlight(e: MouseEvent) {
 function zoomToAirspace(e: MouseEvent) {
     const polygon = e.target as any as L.Polyline;
     map.fitBounds(polygon.getBounds());
+}
+
+/**
+ * Convert nautical miles to meters.
+ */
+function nauticalMilesToMeters(nm: number): number {
+    return nm * 1852;
 }
 
 /**
@@ -81,19 +92,15 @@ function showAirspace(airspace: Airspace) {
             color = '#607d8b';  // Blue Grey
             break;
         default:
-            console.log('Class is ', airspace.class);
             color = 'grey';
     }
     switch (airspace.geom.type) {
         case "Polygon":
             const polygon = L.polygon(
                 airspace.geom.points.map((obj) => [obj.lat, obj.lng]),
-                {
+                Object.assign(defaultStyle, {
                     color: color,
-                    weight: defaultWeight,
-                    opacity: 0.6,
-                    interactive: true,
-                },
+                }),
             );
             polygon.addEventListener('mouseover', highlightAirspace);
             polygon.addEventListener('mouseout', resetHighlight);
@@ -101,8 +108,20 @@ function showAirspace(airspace: Airspace) {
             polygon.addTo(map);
             break;
         case "Circle":
-            // TODO
+            const circle = L.circle(
+                airspace.geom.centerpoint,
+                Object.assign(defaultStyle, {
+                    color: color,
+                    radius: nauticalMilesToMeters(airspace.geom.radius),
+                }),
+            );
+            circle.addEventListener('mouseover', highlightAirspace);
+            circle.addEventListener('mouseout', resetHighlight);
+            circle.addEventListener('click', zoomToAirspace);
+            circle.addTo(map);
             break;
+        default:
+            throw new Error(`Unhandled geometry type: ${airspace.geom.type}`);
     }
 }
 

@@ -11,6 +11,8 @@ export interface Coord {
 export interface Geometry {
     type: 'Polygon' | 'Circle',
     points?: Coord[],
+    centerpoint?: Coord,
+    radius?: number,
 }
 
 export interface Airspace {
