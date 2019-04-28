@@ -44,7 +44,6 @@ function highlightAirspace(airspace: Airspace) {
         polygon.setStyle({
             weight: highlightedWeight,
         });
-        polygon.bringToFront();
 
         name.innerText = airspace.name;
         classification.innerText = `Class ${airspace.class}`;
@@ -153,11 +152,34 @@ function loadFile(files: FileList) {
             const bytes = new Uint8Array(this.result as ArrayBuffer);
 
             // Process bytes
-            const result = process_openair(bytes);
+            const result: Airspace[] = process_openair(bytes);
             console.log('Data returned by WASM:', result);
 
-            // Show airspaces
             if (result !== null) {
+                // Sort airspaces
+                result.sort((a1: Airspace, a2: Airspace) => {
+                    // Polygons are usually larger, put them at the bottom
+                    if (a1.geom.type === 'Polygon' && a2.geom.type === 'Circle') {
+                        return -1;
+                    } else if (a1.geom.type === 'Circle' && a2.geom.type === 'Polygon') {
+                        return 1;
+                    }
+
+                    // Put larger circles at the bottom
+                    if (a1.geom.type === 'Circle' && a2.geom.type === 'Circle') {
+                        if (a1.geom.radius > a2.geom.radius) {
+                            return -1;
+                        } else if (a1.geom.radius < a2.geom.radius) {
+                            return 1;
+                        } else {
+                            return 0;
+                        }
+                    }
+
+                    return 0;
+                });
+
+                // Add airspaces to map
                 for (const airspace of result) {
                     showAirspace(airspace);
                 }
