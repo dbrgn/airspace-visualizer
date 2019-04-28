@@ -183,6 +183,8 @@ function loadFile(files: FileList) {
                 for (const airspace of result) {
                     showAirspace(airspace);
                 }
+            } else {
+                alert('No airspaces could be found. Is it a valid OpenAir file?');
             }
         };
         reader.onerror = function(e: ProgressEvent) {
