@@ -1,5 +1,5 @@
 import {process_openair} from 'airspace-visualizer';
-import {Airspace, Altitude} from './openair';
+import {Airspace, Altitude, PolygonSegment, Point, Arc, ArcSegment} from './openair';
 import {initDragAndDrop} from './drag_drop';
 import {feetToMeters, nauticalMilesToMeters} from './units';
 import * as L from 'leaflet';
@@ -23,10 +23,16 @@ function altitudeToText(altitude: Altitude): string {
     switch (altitude.type) {
         case 'Gnd':
             return 'GND';
-        case 'FeetAgl':
-            return `${feetToMeters(altitude.val)} m AGL`;
         case 'FeetAmsl':
-            return `${feetToMeters(altitude.val)} m AMSL`;
+            return `${feetToMeters(altitude.val as number)} m AMSL`;
+        case 'FeetAgl':
+            return `${feetToMeters(altitude.val as number)} m AGL`;
+        case 'FlightLevel':
+            return `FL ${altitude.val}`;
+        case 'Unlimited':
+            return `Unlimited`;
+        case 'Other':
+            return `?(${altitude.val})`;
         default:
             throw new Error(`Invalid altitude type: ${altitude.type}`);
     }
@@ -69,6 +75,18 @@ function resetHighlight(e: MouseEvent) {
 function zoomToAirspace(e: MouseEvent) {
     const polygon = e.target as any as L.Polyline;
     map.fitBounds(polygon.getBounds());
+}
+
+function isPoint(segment: PolygonSegment): segment is Point {
+    return segment.type == "Point";
+}
+
+function isArc(segment: PolygonSegment): segment is Arc {
+    return segment.type == "Arc";
+}
+
+function isArcSegment(segment: PolygonSegment): segment is ArcSegment {
+    return segment.type == "ArcSegment";
 }
 
 /**
@@ -115,7 +133,11 @@ function showAirspace(airspace: Airspace): L.Path {
     switch (airspace.geom.type) {
         case "Polygon":
             const polygon = L.polygon(
-                airspace.geom.points.map((obj) => [obj.lat, obj.lng]),
+                airspace.geom.segments.filter(isPoint).map((obj) => {
+                    if (isPoint(obj)) {
+                        return [obj.lat, obj.lng];
+                    }
+                }),
                 Object.assign(defaultStyle, {
                     color: color,
                 }),
