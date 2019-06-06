@@ -40,16 +40,13 @@ pub fn process_openair(data: Uint8Array) -> JsValue {
     // Process data
     info!("process_openair ({} bytes)", bytes.len());
     let mut cursor = Cursor::new(&bytes);
-    let mut airspaces = vec![];
-    while let Some(airspace) = match parse(&mut cursor) {
+    let airspaces = match parse(&mut cursor) {
         Ok(parsed) => parsed,
         Err(e) => {
             error!("Could not parse airspace data: {}", e);
             return JsValue::NULL;
         }
-    } {
-        airspaces.push(airspace);
-    }
+    };
 
     // Serialize and return data
     match JsValue::from_serde(&airspaces) {
@@ -64,8 +61,6 @@ pub fn process_openair(data: Uint8Array) -> JsValue {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-
     use wasm_bindgen_test::*;
 
     wasm_bindgen_test_configure!(run_in_browser);
