@@ -1,5 +1,5 @@
 SSH_HOST=dbrgn.ch
-SSH_PORT=22
+SSH_PORT=2223
 SSH_USER=danilo
 SSH_TARGET_DIR=/srv/www/airspaces/
 
@@ -21,7 +21,7 @@ dev: build-dev
 	cd www && npm run start
 
 dist: build-release
-	cd www && rm -r dist && npm run build
+	cd www && rm -rf dist && npm run build
 	@echo ""
 	@echo "Done, you can find the dist bundle in the www/dist/ directory."
 
