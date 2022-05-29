@@ -41,11 +41,11 @@ function altitudeToText(altitude: Altitude): string {
 /**
  * Highlight an airspace on the mouseover event.
  */
-function highlightAirspace(airspace: Airspace) {
+function highlightAirspace(airspace: Airspace): L.LeafletMouseEventHandlerFn {
     const name: HTMLElement = airspaceinfo.querySelector('.name');
     const classification: HTMLElement = airspaceinfo.querySelector('.class');
     const bounds: HTMLElement = airspaceinfo.querySelector('.bounds');
-    return (e: MouseEvent) => {
+    return (e: L.LeafletMouseEvent) => {
         const polygon = e.target as any as L.Polyline;
         polygon.setStyle({
             weight: highlightedWeight,
@@ -61,7 +61,7 @@ function highlightAirspace(airspace: Airspace) {
 /**
  * Reset highlights on the mouseout event.
  */
-function resetHighlight(e: MouseEvent) {
+function resetHighlight(e: L.LeafletMouseEvent) {
     const polygon = e.target as any as L.Polyline;
     polygon.setStyle({
         weight: defaultWeight,
@@ -72,7 +72,7 @@ function resetHighlight(e: MouseEvent) {
 /**
  * Zoom to the airspace on click.
  */
-function zoomToAirspace(e: MouseEvent) {
+function zoomToAirspace(e: L.LeafletMouseEvent) {
     const polygon = e.target as any as L.Polyline;
     map.fitBounds(polygon.getBounds());
 }
