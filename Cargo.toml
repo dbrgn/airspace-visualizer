@@ -15,7 +15,7 @@ crate-type = ["cdylib", "rlib"]
 default = ["console_error_panic_hook", "console_log"]
 
 [dependencies]
-cfg-if = "0.1.2"
+cfg-if = "1"
 js-sys = "0.3"
 openair = { version = "0.2.0", features = ["serde"] }
 serde = { version = "1", features = ["derive"] }
