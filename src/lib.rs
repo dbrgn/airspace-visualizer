@@ -10,20 +10,9 @@ mod utils;
 use std::mem;
 use std::io::Cursor;
 
-use cfg_if::cfg_if;
 use js_sys::Uint8Array;
 use openair::parse;
 use wasm_bindgen::prelude::*;
-
-cfg_if! {
-    // When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
-    // allocator.
-    if #[cfg(feature = "wee_alloc")] {
-        extern crate wee_alloc;
-        #[global_allocator]
-        static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
-    }
-}
 
 /// Parse the file contents, return the list of airspaces or null (if parsing
 /// failed).
