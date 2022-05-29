@@ -1,4 +1,4 @@
-SSH_HOST=dbrgn.ch
+SSH_HOST=v22022051724191318.quicksrv.de
 SSH_PORT=2223
 SSH_USER=danilo
 SSH_TARGET_DIR=/srv/www/airspaces/
