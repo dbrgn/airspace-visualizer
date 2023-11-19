@@ -18,6 +18,7 @@
     "webpack-merge": "^4.2.1"
   },
   "dependencies": {
+    "airspace-visualizer": "file:../pkg",
     "leaflet": "^1.4.0"
   }
 }

@@ -29,11 +29,8 @@ To run tests:
 
 To set up the frontend:
 
-    cd pkg
-    npm link
-    cd ../www
+    cd www
     npm install
-    npm link airspace-visualizer
     cd ..
 
 Start the dev server:
