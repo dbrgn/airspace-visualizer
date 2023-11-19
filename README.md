@@ -29,11 +29,8 @@ To run tests:
 
 To set up the frontend:
 
-    cd pkg
-    npm link
-    cd ../www
+    cd www
     npm install
-    npm link airspace-visualizer
     cd ..
 
 Start the dev server:
@@ -47,7 +44,7 @@ Now the frontend should be running at `localhost:8080`.
 
 Licensed under the AGPL version 3 or later. See `LICENSE.md` file.
 
-    Copyright (C) 2019-2022 Danilo Bargen
+    Copyright (C) 2019-2023 Danilo Bargen
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as

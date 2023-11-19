@@ -22,6 +22,14 @@ module.exports = {
         filename: 'bootstrap.[name].bundle.js',
     },
     plugins: [
-        new CopyWebpackPlugin(['index.html', 'node_modules/leaflet/dist/leaflet.css']),
+        new CopyWebpackPlugin({
+            patterns: [
+                {from: 'index.html'},
+                {from: 'node_modules/leaflet/dist/leaflet.css'},
+            ],
+        }),
     ],
+    experiments: {
+        asyncWebAssembly: true,
+    },
 };
