@@ -13,11 +13,10 @@ module.exports = merge(common, {
         pathinfo: false
     },
     optimization: {
-        namedModules: false,
-        namedChunks: false,
+        moduleIds: 'named',
+        chunkIds: 'named',
         nodeEnv: 'production',
         flagIncludedChunks: true,
-        occurrenceOrder: true,
         sideEffects: true,
         usedExports: true,
         concatenateModules: true,
@@ -27,7 +26,7 @@ module.exports = merge(common, {
             maxAsyncRequests: 5,
             maxInitialRequests: 3,
         },
-        noEmitOnErrors: true,
+        emitOnErrors: false,
         checkWasmTypes: true,
         minimize: false,
     },
