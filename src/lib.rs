@@ -38,7 +38,7 @@ pub fn process_openair(data: Uint8Array) -> JsValue {
     };
 
     // Serialize and return data
-    match JsValue::from_serde(&airspaces) {
+    match serde_wasm_bindgen::to_value(&airspaces) {
         Ok(val) => val,
         Err(e) => {
             error!("Could not serialize airspaces: {}", e);
