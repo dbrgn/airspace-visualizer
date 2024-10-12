@@ -5,7 +5,7 @@ version = "0.1.0"
 authors = ["Danilo Bargen <mail@dbrgn.ch>"]
 license = "AGPL-3.0"
 repository = "https://github.com/dbrgn/airspace-visualizer"
-edition = "2018"
+edition = "2021"
 publish = false
 
 [lib]
@@ -17,9 +17,10 @@ default = ["console_error_panic_hook", "console_log"]
 [dependencies]
 cfg-if = "1"
 js-sys = "0.3"
-openair = { version = "0.2.0", features = ["serde"] }
+openair = { version = "0.3.1", features = ["serde"] }
 serde = { version = "1", features = ["derive"] }
-wasm-bindgen = { version = "=0.2.88", features = ["serde-serialize"] }
+serde-wasm-bindgen = "0.6"
+wasm-bindgen = { version = "=0.2.95", features = ["serde-serialize"] }
 
 # The `console_error_panic_hook` crate provides better debugging of panics by
 # logging them with `console.error`. This is great for development, but requires
@@ -29,7 +30,7 @@ console_error_panic_hook = { version = "0.1.1", optional = true }
 
 # Add logging support
 log = "0.4"
-console_log = { version = "0.2", optional = true }
+console_log = { version = "1", optional = true }
 
 [dependencies.web-sys]
 version = "0.3"

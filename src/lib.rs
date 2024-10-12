@@ -1,7 +1,7 @@
 #![deny(clippy::all)]
 #![warn(clippy::pedantic)]
 #![allow(clippy::non_ascii_literal, clippy::single_match_else, clippy::if_not_else,
-         clippy::similar_names, clippy::module_name_repetitions)]
+         clippy::similar_names, clippy::module_name_repetitions, clippy::must_use_candidate)]
 
 #[macro_use] extern crate log;
 
@@ -38,7 +38,7 @@ pub fn process_openair(data: Uint8Array) -> JsValue {
     };
 
     // Serialize and return data
-    match JsValue::from_serde(&airspaces) {
+    match serde_wasm_bindgen::to_value(&airspaces) {
         Ok(val) => val,
         Err(e) => {
             error!("Could not serialize airspaces: {}", e);
