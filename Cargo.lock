@@ -100,9 +100,9 @@ checksum = "dd8b5dd2ae5ed71462c540258bedcb51965123ad7e7ccf4b9a8cafaa4a63576d"
 
 [[package]]
 name = "openair"
-version = "0.2.0"
+version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5546a47fd05aaa85cc1b3401c13637c9a53d338c743ac3110466b6b6ad3854e1"
+checksum = "d30e89cbec6529712e7093d5603bca23ae0a88358da87fbaa63845ce204735eb"
 dependencies = [
  "lazy_static",
  "log",
